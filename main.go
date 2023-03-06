@@ -14,13 +14,14 @@ func Add(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
-	key := store.Put(url)
-	//store.Put(url)
-	//http.Redirect(w, r, "/", http.StatusFound)
-	fmt.Fprintf(w, "%s", key)
+	//key := store.Put(url)
+	store.Put(url)
+	http.Redirect(w, r, "/", http.StatusFound)
+	//fmt.Fprintf(w, "%s", key)
 }
 
 func Homepage(w http.ResponseWriter, r *http.Request) {
+	http.FileServer(http.Dir("./image/"))
 	tmpl, err := template.ParseFiles("./index/homepage.html")
 	if err != nil {
 		fmt.Fprint(w, err.Error())
