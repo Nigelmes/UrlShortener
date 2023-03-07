@@ -26,7 +26,7 @@ func Homepage(w http.ResponseWriter, r *http.Request) {
 }
 
 func Redirect(w http.ResponseWriter, r *http.Request) {
-	key := r.URL.Path[7:]
+	key := r.URL.Path[len("/short/"):]
 	url := store.Get(key)
 	if url == "" {
 		http.NotFound(w, r)
