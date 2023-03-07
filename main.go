@@ -8,42 +8,38 @@ import (
 
 var store = NewUrlStore()
 
-func Add(w http.ResponseWriter, r *http.Request) {
-	url := r.FormValue("url")
-	if url == "" {
-		http.Redirect(w, r, "/", http.StatusFound)
-		return
-	}
-	//key := store.Put(url)
-	store.Put(url)
-	http.Redirect(w, r, "/", http.StatusFound)
-	//fmt.Fprintf(w, "%s", key)
-}
-
 func Homepage(w http.ResponseWriter, r *http.Request) {
-	http.FileServer(http.Dir("./image/"))
 	tmpl, err := template.ParseFiles("./index/homepage.html")
 	if err != nil {
 		fmt.Fprint(w, err.Error())
+		return
 	}
-	tmpl.Execute(w, nil)
+	if r.Method == "POST" {
+		url := r.FormValue("url")
+		if url != "" {
+			key := store.Put(url)
+			tmpl.Execute(w, "http://localhost/short/"+key)
+			return
+		}
+	}
+	tmpl.Execute(w, "")
 }
 
-//func Redirect(w http.ResponseWriter, r *http.Request) {
-//	key := r.URL.Path[1:]
-//	url := store.Get(key)
-//	if url == "" {
-//		http.NotFound(w, r)
-//		return
-//	}
-//	http.Redirect(w, r, url, http.StatusFound)
-//}
+func Redirect(w http.ResponseWriter, r *http.Request) {
+	key := r.URL.Path[7:]
+	url := store.Get(key)
+	if url == "" {
+		http.NotFound(w, r)
+		return
+	}
+	http.Redirect(w, r, url, http.StatusFound)
+}
 
 func main() {
-	http.HandleFunc("/add", Add)
+	http.Handle("/image/", http.StripPrefix("/image/", http.FileServer(http.Dir("./image/"))))
 	http.HandleFunc("/", Homepage)
-	//http.HandleFunc("/", Redirect)
-	if err := http.ListenAndServe("0.0.0.0:45800", nil); err != nil {
+	http.HandleFunc("/short/", Redirect)
+	if err := http.ListenAndServe(":80", nil); err != nil {
 		panic(err)
 	}
 }
