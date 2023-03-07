@@ -11,7 +11,7 @@ func NewUrlStore() *UrlStore { // функция для создания наш�
 	return &UrlStore{urls: make(map[string]string)}
 }
 
-func (s *UrlStore) Get(key string) string { // получение
+func (s *UrlStore) Get(key string) string { // получение url адреса по ключу
 	s.mu.RLock()
 	url := s.urls[key]
 	s.mu.RUnlock()
@@ -20,7 +20,7 @@ func (s *UrlStore) Get(key string) string { // получение
 
 func (s *UrlStore) Set(key, url string) bool { // добавление нового url
 	s.mu.Lock()
-	if _, ok := s.urls[key]; ok { // првоерка имеется ли уже такой ключ, если имеется возвращаем false
+	if _, ok := s.urls[key]; ok {
 		s.mu.Unlock()
 		return false
 	}
