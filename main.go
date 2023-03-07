@@ -36,7 +36,7 @@ func Redirect(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.Handle("/image/", http.StripPrefix("/image/", http.FileServer(http.Dir("./image/"))))
+	http.Handle("/index/", http.StripPrefix("/index/", http.FileServer(http.Dir("./index/"))))
 	http.HandleFunc("/", Homepage)
 	http.HandleFunc("/short/", Redirect)
 	if err := http.ListenAndServe(":80", nil); err != nil {
