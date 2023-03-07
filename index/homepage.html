@@ -19,7 +19,7 @@
         <div class="row">
             <div class="col-md-8 offset-md-2">
                 <h3 class="text-center">Paste the URL to be shortened</h3>
-                <form action="/add" method="post">
+                <form action="/" method="post">
                     <div class="input-group">
                         <input type="text" name="url" class="form-control" placeholder="Enter the link here">
                         <div class="input-group-append">
@@ -30,17 +30,16 @@
                 <p class="text-center mt-3">ShortURL is a service to shorten URLs and create short links</p>
             </div>
         </div>
-    </section>
-    <section id="responsebox">
-        <div class="row">
-            <div class="col-md-8 offset-md-2">
-                <h3 class="text-center">Short URL</h3>
-                <div class="input-group">
-                    <input type="text" name="response" class="form-control" readonly>
+        <section id="responsebox">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <h3 class="text-center">Short URL</h3>
+                    <div class="input-group" style="background-color: #fff;">
+                        <a href="{{.}}" class="form-control">{{.}}</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 </div>
 </body>
 </html>
